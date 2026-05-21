@@ -56,7 +56,7 @@ public class LoginPageTest {
     @Test
     public void testLoginPageVisual() {
         eyes.open(driver, "FreshCart", "Login Page", new RectangleSize(1200, 800));
-        driver.get("https://deepak-gurejani.github.io/Eyes-testng-lab/index.html");
+        driver.get("https://deepak-gurejani.github.io/Applitools-FreshCart-demo/index.html");
         eyes.check("Login Page - Strict", Target.window().fully().matchLevel(MatchLevel.STRICT));
         eyes.check("Login Page - Layout", Target.window().fully().matchLevel(MatchLevel.LAYOUT));
         eyes.check("Login Page - Content", Target.window().fully().matchLevel(MatchLevel.CONTENT));

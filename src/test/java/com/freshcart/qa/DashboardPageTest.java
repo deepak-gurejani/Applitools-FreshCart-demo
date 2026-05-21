@@ -52,7 +52,7 @@ public class DashboardPageTest {
     @Test
     public void testDashboardWithIgnoreRegion() {
         eyes.open(driver, "FreshCart", "Dashboard", new RectangleSize(1200, 800));
-        driver.get("https://deepak-gurejani.github.io/Eyes-testng-lab/dashboard.html");
+        driver.get("https://deepak-gurejani.github.io/Applitools-FreshCart-demo/dashboard.html");
 
         eyes.check("Dashboard - Ignore Region (timestamp)",
                 Target.window().fully()
@@ -64,7 +64,7 @@ public class DashboardPageTest {
     @Test
     public void testDashboardWithFloatingRegion() {
         eyes.open(driver, "FreshCart", "Dashboard", new RectangleSize(1200, 800));
-        driver.get("https://deepak-gurejani.github.io/Eyes-testng-lab/dashboard.html");
+        driver.get("https://deepak-gurejani.github.io/Applitools-FreshCart-demo/dashboard.html");
 
         eyes.check("Dashboard - Floating Region (timestamp)",
                 Target.window().fully()
