@@ -23,7 +23,10 @@ public class DashboardPageTest {
     private WebDriver driver;
     private Eyes eyes;
     private VisualGridRunner runner;
-    private static final BatchInfo BATCH = new BatchInfo("FreshCart Sprint 1 Regression");
+
+    private static final String BRANCH = System.getenv("APPLITOOLS_BRANCH") != null
+            ? System.getenv("APPLITOOLS_BRANCH") : "local";
+    private static final BatchInfo BATCH = new BatchInfo("FreshCart - " + BRANCH);
 
     @BeforeClass
     public void setUp() {
@@ -37,16 +40,21 @@ public class DashboardPageTest {
         Configuration config = eyes.getConfiguration();
         config.setApiKey(System.getenv("APPLITOOLS_API_KEY"));
         config.setBatch(BATCH);
+        if (System.getenv("GITHUB_RUN_ID") != null) {
+            BATCH.setId(System.getenv("GITHUB_RUN_ID"));
+        }
+        config.setBranchName(System.getenv("APPLITOOLS_BRANCH"));
+        config.setParentBranchName("main");
         config.addBrowser(1200, 800, BrowserType.CHROME);
         eyes.setConfiguration(config);
     }
 
     @Test
     public void testDashboardWithIgnoreRegion() {
-        eyes.open(driver, "FreshCart", "Dashboard - Ignore Region", new RectangleSize(1200, 800));
+        eyes.open(driver, "FreshCart", "Dashboard", new RectangleSize(1200, 800));
         driver.get("https://deepak-gurejani.github.io/Eyes-testng-lab/dashboard.html");
 
-        eyes.check("Dashboard with Ignored Timestamp",
+        eyes.check("Dashboard - Ignore Region (timestamp)",
                 Target.window().fully()
                         .ignore(driver.findElement(By.id("liveTimestamp"))));
 
@@ -55,10 +63,10 @@ public class DashboardPageTest {
 
     @Test
     public void testDashboardWithFloatingRegion() {
-        eyes.open(driver, "FreshCart", "Dashboard - Floating Region", new RectangleSize(1200, 800));
+        eyes.open(driver, "FreshCart", "Dashboard", new RectangleSize(1200, 800));
         driver.get("https://deepak-gurejani.github.io/Eyes-testng-lab/dashboard.html");
 
-        eyes.check("Dashboard with Floating Timestamp",
+        eyes.check("Dashboard - Floating Region (timestamp)",
                 Target.window().fully()
                         .floating(driver.findElement(By.id("liveTimestamp")), 10, 10, 10, 10));
 

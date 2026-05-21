@@ -23,7 +23,10 @@ public class LoginPageTest {
     private WebDriver driver;
     private Eyes eyes;
     private VisualGridRunner runner;
-    private static final BatchInfo BATCH = new BatchInfo("FreshCart Sprint 1 Regression");
+
+    private static final String BRANCH = System.getenv("APPLITOOLS_BRANCH") != null
+            ? System.getenv("APPLITOOLS_BRANCH") : "local";
+    private static final BatchInfo BATCH = new BatchInfo("FreshCart - " + BRANCH);
 
     @BeforeClass
     public void setUp() {
@@ -37,6 +40,9 @@ public class LoginPageTest {
         Configuration config = eyes.getConfiguration();
         config.setApiKey(System.getenv("APPLITOOLS_API_KEY"));
         config.setBatch(BATCH);
+        if (System.getenv("GITHUB_RUN_ID") != null) {
+            BATCH.setId(System.getenv("GITHUB_RUN_ID"));
+        }
         config.setBranchName(System.getenv("APPLITOOLS_BRANCH"));
         config.setParentBranchName("main");
         config.addBrowser(1200, 800, BrowserType.CHROME);
@@ -49,8 +55,8 @@ public class LoginPageTest {
 
     @Test
     public void testLoginPageVisual() {
-        eyes.open(driver, "FreshCart", "Login Page Visual Test", new RectangleSize(1200, 800));
-        driver.get("https://deepak-gurejani.github.io/Eyes-testng-lab/");
+        eyes.open(driver, "FreshCart", "Login Page", new RectangleSize(1200, 800));
+        driver.get("https://deepak-gurejani.github.io/Eyes-testng-lab/index.html");
         eyes.check("Login Page - Strict", Target.window().fully().matchLevel(MatchLevel.STRICT));
         eyes.check("Login Page - Layout", Target.window().fully().matchLevel(MatchLevel.LAYOUT));
         eyes.check("Login Page - Content", Target.window().fully().matchLevel(MatchLevel.CONTENT));
