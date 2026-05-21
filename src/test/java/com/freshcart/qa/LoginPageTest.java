@@ -26,7 +26,18 @@ public class LoginPageTest {
 
     private static final String BRANCH = System.getenv("APPLITOOLS_BRANCH") != null
             ? System.getenv("APPLITOOLS_BRANCH") : "local";
-    private static final BatchInfo BATCH = new BatchInfo("FreshCart - " + BRANCH);
+    private static final String BATCH_ID = System.getenv("APPLITOOLS_BATCH_ID") != null
+            ? System.getenv("APPLITOOLS_BATCH_ID")
+            : (System.getenv("GITHUB_RUN_ID") != null
+            ? System.getenv("GITHUB_RUN_ID")
+            : "local-" + System.currentTimeMillis() / 60000);
+    private static final BatchInfo BATCH = createBatch();
+
+    private static BatchInfo createBatch() {
+        BatchInfo batch = new BatchInfo("FreshCart - " + BRANCH);
+        batch.setId(BATCH_ID);
+        return batch;
+    }
 
     @BeforeClass
     public void setUp() {
@@ -40,9 +51,6 @@ public class LoginPageTest {
         Configuration config = eyes.getConfiguration();
         config.setApiKey(System.getenv("APPLITOOLS_API_KEY"));
         config.setBatch(BATCH);
-        if (System.getenv("GITHUB_RUN_ID") != null) {
-            BATCH.setId(System.getenv("GITHUB_RUN_ID"));
-        }
         config.setBranchName(System.getenv("APPLITOOLS_BRANCH"));
         config.setParentBranchName("main");
         config.addBrowser(1200, 800, BrowserType.CHROME);
